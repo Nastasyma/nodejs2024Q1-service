@@ -3,7 +3,7 @@ import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class DatabaseService {
-  private users: User[] = [];
+  private readonly users: User[] = [];
 
   addUser(user: User) {
     this.users.push(user);
