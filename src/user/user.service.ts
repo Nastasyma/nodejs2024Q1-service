@@ -3,6 +3,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -17,13 +18,13 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return plainToClass(User, user);
   }
 
   create(createUserDto: CreateUserDto): User {
     const user = new User(createUserDto.login, createUserDto.password);
     this.databaseService.addUser(user);
-    return user;
+    return plainToClass(User, user);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
@@ -38,7 +39,7 @@ export class UserService {
     user.updatedAt = Date.now();
     user.password = updateUserDto.newPassword;
     this.databaseService.updateUser(user)
-    return user;
+    return plainToClass(User, user);
   }
 
   remove(id: string) {
