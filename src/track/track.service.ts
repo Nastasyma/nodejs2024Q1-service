@@ -21,30 +21,30 @@ export class TrackService {
     return plainToClass(Track, track);
   }
 
-  create(createUserDto: CreateTrackDto): Track {
+  create(createTrackDto: CreateTrackDto): Track {
     const track = new Track(
-      createUserDto.name,
-      createUserDto.artistId || null,
-      createUserDto.albumId || null,
-      createUserDto.duration,
+      createTrackDto.name,
+      createTrackDto.artistId || null,
+      createTrackDto.albumId || null,
+      createTrackDto.duration,
     );
     this.databaseService.addTrack(track);
     return plainToClass(Track, track);
   }
 
-  update(id: string, updateUserDto: UpdateTrackDto): Track {
+  update(id: string, updateTrackDto: UpdateTrackDto): Track {
     const track = this.databaseService.getTrackById(id);
     if (!track) {
       throw new NotFoundException('Track not found');
     }
-    track.name = updateUserDto.name;
-    if (updateUserDto.artistId) {
-      track.artistId = updateUserDto.artistId;
+    track.name = updateTrackDto.name;
+    if (updateTrackDto.artistId) {
+      track.artistId = updateTrackDto.artistId;
     }
-    if (updateUserDto.albumId) {
-      track.albumId = updateUserDto.albumId;
+    if (updateTrackDto.albumId) {
+      track.albumId = updateTrackDto.albumId;
     }
-    track.duration = updateUserDto.duration;
+    track.duration = updateTrackDto.duration;
     this.databaseService.updateTrack(track);
     return plainToClass(Track, track);
   }
