@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,19 +13,39 @@ export class UserService {
   }
 
   findOne(id: string) {
-    return this.databaseService.getUserById(id);
+    const user = this.databaseService.getUserById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
-  create(createUserDto: CreateUserDto) {
-    return this.databaseService.addUser(
-      new User(createUserDto.login, createUserDto.password),
-    );
+
+  create(createUserDto: CreateUserDto): User {
+    const user = new User(createUserDto.login, createUserDto.password);
+    this.databaseService.addUser(user);
+    return user;
   }
+
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.databaseService.updateUser(
-      new User(updateUserDto.login, updateUserDto.password),
-    );
+    const user = this.databaseService.getUserById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (updateUserDto.oldPassword !== user.password) {
+      throw new ForbiddenException('Wrong password');
+    }
+    user.version++;
+    user.updatedAt = Date.now();
+    user.password = updateUserDto.newPassword;
+    this.databaseService.updateUser(user)
+    return user;
   }
+
   remove(id: string) {
+    const user = this.databaseService.getUserById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
     return this.databaseService.deleteUser(id);
   }
 }

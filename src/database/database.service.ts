@@ -4,9 +4,9 @@ import { User } from 'src/user/entities/user.entity';
 @Injectable()
 export class DatabaseService {
   private users: User[] = [];
+
   addUser(user: User) {
     this.users.push(user);
-    return user;
   }
 
   getUsers() {
@@ -20,12 +20,10 @@ export class DatabaseService {
   updateUser(user: User) {
     const index = this.users.findIndex((u) => u.id === user.id);
     this.users[index] = user;
-    return user;
   }
 
   deleteUser(id: string) {
     const index = this.users.findIndex((u) => u.id === id);
     this.users.splice(index, 1);
-    return id;
   }
 }
