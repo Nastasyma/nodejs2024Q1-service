@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -9,11 +13,11 @@ import { plainToClass } from 'class-transformer';
 export class UserService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  findAll() {
+  findAll(): User[] {
     return this.databaseService.getUsers();
   }
 
-  findOne(id: string) {
+  findOne(id: string): User {
     const user = this.databaseService.getUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -27,7 +31,7 @@ export class UserService {
     return plainToClass(User, user);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto): User {
     const user = this.databaseService.getUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -38,11 +42,11 @@ export class UserService {
     user.version++;
     user.updatedAt = Date.now();
     user.password = updateUserDto.newPassword;
-    this.databaseService.updateUser(user)
+    this.databaseService.updateUser(user);
     return plainToClass(User, user);
   }
 
-  remove(id: string) {
+  remove(id: string): void {
     const user = this.databaseService.getUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');
