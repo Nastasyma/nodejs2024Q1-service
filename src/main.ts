@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import 'dotenv/config';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-
-const PORT = Number(process.env.PORT) || 4001;
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT', 4000);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(PORT, () => console.log(`App running on port ${PORT}`));
+  await app.listen(port, () => console.log(`App is running on port ${port}`));
 }
 bootstrap();
