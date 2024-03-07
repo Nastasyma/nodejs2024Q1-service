@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Album } from 'src/album/entities/album.entity';
 import { Artist } from 'src/artist/entities/artist.entity';
 import { Track } from 'src/track/entities/track.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -8,6 +9,7 @@ export class DatabaseService {
   private readonly users: User[] = [];
   private readonly tracks: Track[] = [];
   private readonly artists: Artist[] = [];
+  private readonly albums: Album[] = [];
 
   addUser(user: User) {
     this.users.push(user);
@@ -76,6 +78,38 @@ export class DatabaseService {
     this.tracks.forEach((track) => {
       if (track.artistId === id) {
         track.artistId = null;
+      }
+    });
+    this.albums.forEach((album) => {
+      if (album.artistId === id) {
+        album.artistId = null;
+      }
+    });
+  }
+
+  addAlbum(album: Album) {
+    this.albums.push(album);
+  }
+
+  getAlbums() {
+    return this.albums;
+  }
+
+  getAlbumById(id: string) {
+    return this.albums.find((album) => album.id === id);
+  }
+
+  updateAlbum(album: Album) {
+    const index = this.albums.findIndex((a) => a.id === album.id);
+    this.albums[index] = album;
+  }
+
+  deleteAlbum(id: string) {
+    const index = this.albums.findIndex((a) => a.id === id);
+    this.albums.splice(index, 1);
+    this.tracks.forEach((track) => {
+      if (track.albumId === id) {
+        track.albumId = null;
       }
     });
   }
