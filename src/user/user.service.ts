@@ -51,6 +51,6 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return this.databaseService.deleteUser(id);
+    this.databaseService.deleteUser(id);
   }
 }
