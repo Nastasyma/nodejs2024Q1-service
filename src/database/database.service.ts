@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Album } from 'src/album/entities/album.entity';
 import { Artist } from 'src/artist/entities/artist.entity';
+import { Favorites } from 'src/favorites/entities/favorites.entity';
 import { Track } from 'src/track/entities/track.entity';
 import { User } from 'src/user/entities/user.entity';
 
@@ -10,6 +11,11 @@ export class DatabaseService {
   private readonly tracks: Track[] = [];
   private readonly artists: Artist[] = [];
   private readonly albums: Album[] = [];
+  private readonly favorites: Favorites = {
+    artists: [],
+    albums: [],
+    tracks: [],
+  };
 
   addUser(user: User) {
     this.users.push(user);
@@ -53,6 +59,9 @@ export class DatabaseService {
   deleteTrack(id: string) {
     const index = this.tracks.findIndex((t) => t.id === id);
     this.tracks.splice(index, 1);
+    this.favorites.tracks = this.favorites.tracks.filter(
+      (track) => track !== id,
+    );
   }
 
   addArtist(artist: Artist) {
@@ -85,6 +94,9 @@ export class DatabaseService {
         album.artistId = null;
       }
     });
+    this.favorites.artists = this.favorites.artists.filter(
+      (artist) => artist !== id,
+    );
   }
 
   addAlbum(album: Album) {
@@ -112,5 +124,65 @@ export class DatabaseService {
         track.albumId = null;
       }
     });
+    this.favorites.albums = this.favorites.albums.filter(
+      (album) => album !== id,
+    );
+  }
+
+  getFavorites = () => ({
+    artists: this.artists.filter((artist) =>
+      this.favorites.artists.includes(artist.id),
+    ),
+    albums: this.albums.filter((album) =>
+      this.favorites.albums.includes(album.id),
+    ),
+    tracks: this.tracks.filter((track) =>
+      this.favorites.tracks.includes(track.id),
+    ),
+  });
+
+  addFavorite(id: string, type: 'artists' | 'albums' | 'tracks') {
+    switch (type) {
+      case 'artists':
+        this.favorites.artists.push(id);
+        break;
+      case 'albums':
+        this.favorites.albums.push(id);
+        break;
+      case 'tracks':
+        this.favorites.tracks.push(id);
+        break;
+    }
+  }
+
+  deleteFavorite(id: string, type: 'artists' | 'albums' | 'tracks') {
+    switch (type) {
+      case 'artists':
+        this.favorites.artists = this.favorites.artists.filter(
+          (artist) => artist !== id,
+        );
+        break;
+      case 'albums':
+        this.favorites.albums = this.favorites.albums.filter(
+          (album) => album !== id,
+        );
+        break;
+      case 'tracks':
+        this.favorites.tracks = this.favorites.tracks.filter(
+          (track) => track !== id,
+        );
+        break;
+    }
+  }
+
+  isExistFavorite(id: string, type: 'artists' | 'albums' | 'tracks') {
+    switch (type) {
+      case 'artists':
+        return this.artists.some((artist) => artist.id === id);
+      case 'albums':
+        return this.albums.some((album) => album.id === id);
+      case 'tracks':
+        return this.tracks.some((track) => track.id === id);
+    }
   }
 }
