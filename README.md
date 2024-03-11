@@ -41,7 +41,6 @@ or
 ```
 npm run start:dev
 ```
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
@@ -94,3 +93,5 @@ npm run format
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
