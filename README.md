@@ -26,10 +26,9 @@
 
 ## Port
 
-- Rename the .env.example file to .env.
-- Open the .env file and set the desired port by adding the following line:
+- Create .env file (based on .env.example)
   ```sh
-  PORT=4000
+  cp .env.example .env
   ```
 
 ## Running application
