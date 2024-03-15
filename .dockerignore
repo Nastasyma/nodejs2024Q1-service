@@ -1,8 +1,10 @@
 node_modules
 dist
+Dockerfile
 .env
 .github
 .git
 .gitignore
 .vscode
 .docerignore
+npm-debug.log
