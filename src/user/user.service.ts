@@ -3,54 +3,61 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { plainToClass } from 'class-transformer';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly databaseService: DatabaseService) {}
-
-  findAll(): User[] {
-    return this.databaseService.getUsers();
+  constructor(private readonly prisma: PrismaService) {}
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany();
+    return users.map((user) => plainToClass(User, user));
   }
 
-  findOne(id: string): User {
-    const user = this.databaseService.getUserById(id);
+  async findOne(id: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
     return plainToClass(User, user);
   }
 
-  create(createUserDto: CreateUserDto): User {
-    const user = new User(createUserDto.login, createUserDto.password);
-    this.databaseService.addUser(user);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = await this.prisma.user.create({
+      data: {
+        login: createUserDto.login,
+        password: createUserDto.password,
+      },
+    });
     return plainToClass(User, user);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): User {
-    const user = this.databaseService.getUserById(id);
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
     if (updateUserDto.oldPassword !== user.password) {
       throw new ForbiddenException('Wrong password');
     }
-    user.version++;
-    user.updatedAt = Date.now();
-    user.password = updateUserDto.newPassword;
-    this.databaseService.updateUser(user);
-    return plainToClass(User, user);
+    const updatedUser = this.prisma.user.update({
+      where: { id },
+      data: {
+        password: updateUserDto.newPassword,
+        version: { increment: 1 },
+      },
+    });
+    return plainToClass(User, updatedUser);
   }
 
-  remove(id: string): void {
-    const user = this.databaseService.getUserById(id);
-    if (!user) {
+  async remove(id: string): Promise<void> {
+    try {
+      await this.prisma.user.delete({ where: { id } });
+    } catch {
       throw new NotFoundException('User not found');
     }
-    this.databaseService.deleteUser(id);
   }
 }
