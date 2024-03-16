@@ -43,7 +43,7 @@ export class UserService {
     if (updateUserDto.oldPassword !== user.password) {
       throw new ForbiddenException('Wrong password');
     }
-    const updatedUser = this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id },
       data: {
         password: updateUserDto.newPassword,
@@ -54,10 +54,10 @@ export class UserService {
   }
 
   async remove(id: string): Promise<void> {
-    try {
-      await this.prisma.user.delete({ where: { id } });
-    } catch {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) {
       throw new NotFoundException('User not found');
     }
+    await this.prisma.user.delete({ where: { id } });
   }
 }
