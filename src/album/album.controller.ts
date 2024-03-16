@@ -21,34 +21,34 @@ export class AlbumController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(): Album[] {
-    return this.albumService.findAll();
+  async findAll(): Promise<Album[]> {
+    return await this.albumService.findAll();
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id', ParseUUIDPipe) id: string): Album {
-    return this.albumService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Album> {
+    return await this.albumService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createAlbumDto: CreateAlbumDto) {
-    return this.albumService.create(createAlbumDto);
+  async create(@Body() createAlbumDto: CreateAlbumDto): Promise<Album> {
+    return await this.albumService.create(createAlbumDto);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
-  ) {
-    return this.albumService.update(id, updateAlbumDto);
+  ): Promise<Album> {
+    return await this.albumService.update(id, updateAlbumDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.albumService.remove(id);
+  async remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<void> {
+    return await this.albumService.remove(id);
   }
 }
