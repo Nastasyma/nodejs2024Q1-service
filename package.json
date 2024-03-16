@@ -14,6 +14,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "docker": "docker-compose up",
+    "docker:scan": "docker scout cves home-library-app && docker scout cves home-library-db",
+    "docker:test": "docker exec home-library npm run test",
     "migrate:dev": "npx prisma migrate dev --name init",
     "migrate:generate": "npx prisma generate",
     "migrate:deploy": "npx prisma migrate deploy",
