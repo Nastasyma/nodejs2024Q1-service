@@ -6,5 +6,5 @@ Dockerfile
 .git
 .gitignore
 .vscode
-.docerignore
+.dockerignore
 npm-debug.log
