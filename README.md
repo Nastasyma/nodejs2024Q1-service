@@ -29,7 +29,7 @@
   ```
 
 ## Running application
-**Warning!** Before running docker containers, clean the date in Docker Desktop!  
+**Warning!** Before running docker containers, clean data in Docker Desktop!  
 <details>
 <summary>Details</summary>
  
