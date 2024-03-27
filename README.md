@@ -17,7 +17,7 @@
   ```
 - Change the branch
   ```sh
-  git checkout develop
+  git checkout part-3
   ```
 - Install NPM packages
   ```sh
@@ -81,6 +81,12 @@ npm run test test/tracks.e2e.spec.ts
 
 ```
 npm run test test/users.e2e.spec.ts
+```
+
+To run all test with authorization
+
+```
+npm run test:auth
 ```
 
 ## Auto-fix and format
