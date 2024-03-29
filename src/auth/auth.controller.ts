@@ -12,9 +12,8 @@ import { AuthService } from './auth.service';
 import { User } from '../user/entities/user.entity';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { AuthDto } from './dto/auth.dto';
-import { Public } from './constants';
 import { ValidationTokenPipe } from 'src/token/token.pipe';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard, Public } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
