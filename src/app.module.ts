@@ -13,6 +13,7 @@ import { TokenService } from './token/token.service';
 import { TokenModule } from './token/token.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { HashingModule } from './hashing/hashing.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthGuard } from './auth/auth.guard';
     PrismaModule,
     AuthModule,
     TokenModule,
+    HashingModule,
   ],
   controllers: [AppController],
   providers: [

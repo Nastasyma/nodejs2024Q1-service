@@ -19,16 +19,23 @@ export class AuthService {
   ) {}
 
   async signup(authDto: AuthDto): Promise<User> {
+    const isUserLoginExist = await this.userService.isUserLoginExist(
+      authDto.login,
+    );
+
+    if (isUserLoginExist) {
+      throw new ForbiddenException('User with this login already exists');
+    }
+
     return await this.userService.create(authDto);
   }
 
   async login(authDto: AuthDto): Promise<Auth> {
-    const isValidPassword = await this.userService.isPasswordValid(
+    const isUserValid = await this.userService.isUserValid(
       authDto.login,
       authDto.password,
     );
-    if (!isValidPassword)
-      throw new ForbiddenException('Wrong password or login');
+    if (!isUserValid) throw new ForbiddenException('Wrong password or login');
 
     const user = await this.userService.findOneByLogin(authDto.login);
     const { id: userId, login } = user;
