@@ -60,4 +60,13 @@ export class UserService {
     }
     await this.prisma.user.delete({ where: { id } });
   }
+
+  async findOneByLogin(login: string) {
+    return await this.prisma.user.findUnique({ where: { login } });
+  }
+
+  async isPasswordValid(login: string, password: string) {
+    const user = await this.findOneByLogin(login);
+    return password === user.password;
+  }
 }
