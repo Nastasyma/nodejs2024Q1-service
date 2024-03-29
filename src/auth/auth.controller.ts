@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { Auth } from './entity/auth.entity';
@@ -13,6 +14,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { AuthDto } from './dto/auth.dto';
 import { Public } from './constants';
 import { ValidationTokenPipe } from 'src/token/token.pipe';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +35,7 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @UseGuards(AuthGuard)
   @Public()
   @UsePipes(new ValidationTokenPipe())
   @HttpCode(HttpStatus.OK)
