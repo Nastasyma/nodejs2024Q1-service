@@ -29,7 +29,9 @@
   ```
 
 ## Running application
-**Warning!** Before running docker containers, clean data in Docker Desktop!  
+
+**Warning!** Before running docker containers, clean data in Docker Desktop!
+
 <details>
 <summary>Details</summary>
  
@@ -40,6 +42,7 @@
 </details>
 
 To create and start containers
+
 ```
 npm run docker
 ```
@@ -54,39 +57,24 @@ After application running open new terminal and enter:
 To run tests
 
 ```
-npm run test
+npm run test:auth
+npm run test:refresh
 ```
 or
 ```
 npm run docker:test
 ```
 
-To run only one of all test suites
-
+## Check writing logs
+To check list files
 ```
-npm run test test/albums.e2e.spec.ts
-```
-
-```
-npm run test test/artists.e2e.spec.ts
+docker exec -it home-library ls -ls logs
 ```
 
+To see content of log file
 ```
-npm run test test/favorites.e2e.spec.ts
-```
-
-```
-npm run test test/tracks.e2e.spec.ts
-```
-
-```
-npm run test test/users.e2e.spec.ts
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
+docker exec -it home-library cat <log_filename>
+# example: docker exec -it home-library cat ./logs/logs_1.log
 ```
 
 ## Auto-fix and format
@@ -100,6 +88,7 @@ npm run format
 ```
 
 ## Scanning
+
 To run script for vulnerabilities scanning (only after `npm run docker`)
 
 ```
@@ -107,7 +96,9 @@ npm run docker:scan
 ```
 
 ## DockerHub Images
-https://hub.docker.com/r/nastasyma/home-library/tags  
+
+https://hub.docker.com/r/nastasyma/home-library/tags
+
 <details>
 <summary>Details</summary>
  
@@ -116,6 +107,11 @@ https://hub.docker.com/r/nastasyma/home-library/tags
 [2]: https://i.imgur.com/OaMab6K.png
  
 </details>
+
+To check images size run the command: docker images
+```
+docker images
+```
 
 ## Debugging in VSCode
 
