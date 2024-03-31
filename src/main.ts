@@ -31,6 +31,18 @@ async function bootstrap() {
   const document = load(api) as OpenAPIObject;
   SwaggerModule.setup('doc', app, document);
 
+  process.on('unhandledRejection', (reason) => {
+    logger.error(
+      'Unhandled Rejection!',
+      reason instanceof Error ? reason.stack : String(reason),
+    );
+  });
+
+  process.on('uncaughtException', (error: Error) => {
+    logger.error('Uncaught Exception!', error.stack);
+    process.exit(1);
+  });
+
   await app.listen(port, () => {
     console.log(`App is running on port ${port}`);
     console.log(`OpenAPI documentation: http://localhost:${port}/doc`);
