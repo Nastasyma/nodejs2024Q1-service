@@ -19,6 +19,7 @@ services:
       - postgres-db
     volumes:
       - ./src:/app/src
+      - ./logs:/app/logs
     networks:
       - home-library
 
