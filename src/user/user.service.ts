@@ -99,7 +99,7 @@ export class UserService {
       return null;
     }
 
-    return isPasswordValid;
+    return plainToClass(User, user);
   }
 
   async isUserLoginExist(login: string) {
