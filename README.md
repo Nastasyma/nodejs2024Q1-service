@@ -43,7 +43,7 @@
 
 To create and start containers
 
-```
+```sh
 npm run docker
 ```
 
@@ -56,34 +56,34 @@ After application running open new terminal and enter:
 
 To run tests
 
-```
+```sh
 npm run test:auth
 npm run test:refresh
 ```
 or
-```
+```sh
 npm run docker:test
 ```
 
 ## Check writing logs
 To check list files
-```
+```sh
 docker exec -it home-library ls -ls logs
 ```
 
 To see content of log file
-```
+```sh
 docker exec -it home-library cat <log_filename>
 # example: docker exec -it home-library cat ./logs/logs_1.log
 ```
 
 ## Auto-fix and format
 
-```
+```sh
 npm run lint
 ```
 
-```
+```sh
 npm run format
 ```
 
@@ -91,7 +91,7 @@ npm run format
 
 To run script for vulnerabilities scanning (only after `npm run docker`)
 
-```
+```sh
 npm run docker:scan
 ```
 
@@ -109,7 +109,7 @@ https://hub.docker.com/r/nastasyma/home-library/tags
 </details>
 
 To check images size run the command: docker images
-```
+```sh
 docker images
 ```
 
